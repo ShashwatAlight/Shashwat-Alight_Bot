@@ -1,8 +1,19 @@
 const { Telegraf } = require('telegraf');
 const axios = require('axios');
 require('dotenv').config();
+const express = require('express')
+const app = express()
+
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const URL = process.env.URL;
+const PORT = process.env.PORT || 5000;
+
+
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
+
+bot.telegram.setWebhook(`${URL}/bot${BOT_TOKEN}`);
+app.use(bot.webhookCallback(`/bot${BOT_TOKEN}`));
 
 
  
@@ -155,6 +166,17 @@ bot.action('NewMathsFact', (ctx) => {
                 console.log(e);
             })
     })
+
+    app.get('/', (req,res)=>{
+
+        res.send(' your bot is running');
+      });
+      app.listen(PORT,()=>{
+      
+      
+      console.log(`server \is running \on port${PORT}`);
+      
+      });
 
 
     bot.launch()
